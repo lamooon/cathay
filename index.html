@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cathay Check-In Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .wrapper {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            width: 95%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #003366;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .label {
+            font-weight: 600;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0072ce;
+            color: #fff;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #004b93;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .ticket {
+            border: 2px dashed #555;
+            padding: 15px;
+            font-family: monospace;
+            margin-top: 20px;
+            background: #fafafa;
+            display: none;
+        }
+
+        .ticket h2 {
+            text-align: center;
+            color: #003366;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .ticket .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 3px 0;
+        }
+
+        .backend {
+            border-top: 1px solid #ccc;
+            margin-top: 25px;
+            padding-top: 10px;
+        }
+
+        .backend button {
+            background: #666;
+            font-size: 14px;
+            padding: 8px;
+            margin-top: 6px;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+
+        @media (max-width: 480px) {
+            .ticket .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <script>
+      function checkIn() {
+        const bn = document.getElementById("bookingNo").value.trim();
+        const msg = document.getElementById("msg");
+        const ticket = document.getElementById("ticket");
+
+        if (!bn || bn.length !== 6 || isNaN(bn)) {
+          msg.style.color = "red";
+          msg.textContent = "❌ Invalid Booking Number (6 digits required)";
+          ticket.style.display = "none";
+          return;
+        }
+
+        msg.style.color = "green";
+        msg.textContent = "✅ Booking " + bn + " checked in";
+
+        // Display fake boarding pass
+        document.getElementById("bnDisplay").textContent = bn;
+        ticket.style.display = "block";
+      }
+
+      function fakePush(type) {
+        const msg = document.getElementById("msg");
+        msg.style.color = "#0072ce";
+        msg.textContent = type + " sent";
+      }
+    </script>
+</head>
+<body>
+
+<div class="wrapper">
+    <h1>Cathay Passenger Check-In</h1>
+
+    <div class="label">Booking Number</div>
+    <input id="bookingNo" type="text" maxlength="6" placeholder="Enter 6-digit BN" />
+
+    <button onclick="checkIn()">Check In</button>
+    <div id="msg" class="message"></div>
+
+    <div id="ticket" class="ticket">
+        <h2>Boarding Pass</h2>
+        <div class="row"><span>NAME:</span> <span>LEE / AMY</span></div>
+        <div class="row"><span>FROM:</span> <span>HONG KONG</span></div>
+        <div class="row"><span>TO:</span> <span>SINGAPORE</span></div>
+        <div class="row"><span>FLIGHT NO.:</span> <span>CX739</span></div>
+        <div class="row"><span>DATE:</span> <span>24 OCT 2025</span></div>
+        <div class="row"><span>SEAT:</span> <span>16C</span></div>
+        <div class="row"><span>BN:</span> <span id="bnDisplay">012345</span></div>
+        <div class="row"><span>GATE:</span> <span>31</span></div>
+        <div class="row"><span>BOARD:</span> <span>18:10</span></div>
+        <div class="row"><span>CLOSE:</span> <span>18:40</span></div>
+    </div>
+
+    <div class="backend">
+        <button onclick="fakePush('Baggage MQ Push')">Push to MQ</button>
+        <button onclick="fakePush('Airport AFTN Push')">Push to AFTN</button>
+    </div>
+</div>
+
+<div class="footer">Cathay Hackathon — Check-In UI Demo</div>
+
+</body>
+</html>
