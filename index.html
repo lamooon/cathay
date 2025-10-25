@@ -3,195 +3,259 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cathay Check-In Demo</title>
+    <title>Cathay Check‑In Demo</title>
     <style>
+        * { box-sizing: border-box; }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background-color: #f7f9fb;
+            color: #003366;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
             margin: 0;
+            padding: 0;
+            letter-spacing: 0.4px;   /* wider overall text spacing */
+            line-height: 1.5;
         }
 
-        .wrapper {
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-            width: 95%;
-            max-width: 400px;
-            padding: 20px 18px 25px;
-        }
-
-        h1 {
+        h2 {
+            margin-top: 30px;
             text-align: center;
+            letter-spacing: 0.8px;
+        }
+
+        .panel {
+            width: 90%;
+            max-width: 480px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 14px;
             color: #003366;
-            margin-bottom: 20px;
-            font-size: 22px;
+            letter-spacing: 0.5px;
         }
 
-        .label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        input {
-            display: block;
+        input, select {
             width: 100%;
-            box-sizing: border-box;
-            padding: 10px 12px;
-            font-size: 16px;
-            font-family: inherit;
-            border: 1.5px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            padding: 9px 12px;
+            border: 1px solid #ccd4dc;
+            border-radius: 4px;
             margin-bottom: 12px;
+            font-size: 15px;
+            outline: none;
+            background-color: #fff;
+            letter-spacing: 0.6px;
+            transition: border 0.2s ease;
         }
 
-        input:focus {
-            border-color: #0072ce;
-            box-shadow: 0 0 0 1px #0072ce40;
+        input::placeholder {
+            color: #9aa5b1;
+            letter-spacing: 0.5px;
         }
+
+        input:focus, select:focus {
+            border-color: #0071c2;
+            box-shadow: 0 0 3px rgba(0,113,194,0.25);
+        }
+
+        select option.red-tag { color: #cc0000; font-weight: 600; }
+        select option.blue-tag { color: #0066cc; font-weight: 600; }
 
         button {
-            display: block;
             width: 100%;
-            padding: 12px;
+            padding: 10px;
+            background-color: #0071c2;
+            color: white;
             border: none;
-            border-radius: 5px;
-            background-color: #0072ce;
-            color: #fff;
-            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background 0.25s;
             margin-top: 6px;
+            font-size: 15px;
+            letter-spacing: 0.8px;
+            transition: background-color 0.2s ease;
         }
 
-        button:hover {
-            background-color: #004b93;
-        }
+        button:hover { background-color: #005fa3; }
 
-        .message {
-            text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
-            min-height: 20px;
-        }
-
-        .ticket {
-            border: 2px dashed #555;
-            padding: 15px;
+        .boarding-pass {
+            border: 2px dashed #ccc;
+            padding: 12px;
+            margin-top: 14px;
             font-family: monospace;
-            margin-top: 20px;
-            background: #fafafa;
             display: none;
+            background-color: #fbfcfd;
+            letter-spacing: 0.5px;
         }
 
-        .ticket h2 {
-            text-align: center;
-            color: #003366;
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-
-        .ticket .row {
-            display: flex;
-            justify-content: space-between;
-            margin: 3px 0;
-        }
-
-        .backend {
-            border-top: 1px solid #ccc;
-            margin-top: 25px;
-            padding-top: 10px;
-        }
-
-        .backend button {
-            background: #666;
+        #statusBox {
+            font-family: monospace;
+            background: #eef5f9;
+            border: 1px solid #ccddee;
+            border-radius: 6px;
+            padding: 10px;
+            height: 180px;
+            overflow-y: auto;
             font-size: 14px;
-            padding: 8px;
-            margin-top: 6px;
+            color: #003366;
+            white-space: pre-wrap;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
         }
 
-        .footer {
-            margin-top: 25px;
-            text-align: center;
+        #buttonsArea {
+            display: none;
+            margin-top: 12px;
+        }
+
+        #nextBtn {
+            background-color: #28a745;
+        }
+
+        #nextBtn:hover {
+            background-color: #1d8837;
+        }
+
+        small.tag-note {
+            display: block;
+            margin-top: -6px;
+            margin-bottom: 10px;
+            color: #555;
             font-size: 12px;
-            color: #777;
-        }
-
-        @media (max-width: 480px) {
-            .ticket .row {
-                flex-direction: column;
-                font-size: 14px;
-            }
+            letter-spacing: 0.4px;
         }
     </style>
-
-    <script>
-      function checkIn() {
-        const bn = document.getElementById("bookingNo").value.trim();
-        const msg = document.getElementById("msg");
-        const ticket = document.getElementById("ticket");
-
-        if (!bn || bn.length !== 6) {
-          msg.style.color = "red";
-          msg.textContent = "❌ Invalid Booking Number (must be 6 characters)";
-          ticket.style.display = "none";
-          return;
-        }
-
-        msg.style.color = "green";
-        msg.textContent = "✅ Booking " + bn + " checked in";
-
-        // Display fake boarding pass with BN
-        document.getElementById("bnDisplay").textContent = bn;
-        ticket.style.display = "block";
-      }
-
-      function fakePush(type) {
-        const msg = document.getElementById("msg");
-        msg.style.color = "#0072ce";
-        msg.textContent = type + " sent (demo only)";
-      }
-    </script>
 </head>
+
 <body>
 
-<div class="wrapper">
-    <h1>Cathay Passenger Check-In</h1>
+<h2>Cathay Passenger Check‑In</h2>
 
-    <label class="label" for="bookingNo">Booking Number</label>
-    <input id="bookingNo" type="text" maxlength="6" placeholder="Enter 6 characters" />
+<div class="panel">
+    <!-- Step 1: Booking number -->
+    <label for="bn">Booking Number</label>
+    <input id="bn" type="text" placeholder="Enter Booking Number (6 digits)" maxlength="6" />
+    <button id="checkinBtn" onclick="handleCheckIn()">Check In</button>
 
-    <button onclick="checkIn()">Check In</button>
-    <div id="msg" class="message"></div>
-
-    <div id="ticket" class="ticket">
-        <h2>Boarding Pass</h2>
-        <div class="row"><span>NAME:</span> <span>LEE / AMY</span></div>
-        <div class="row"><span>FROM:</span> <span>HONG KONG</span></div>
-        <div class="row"><span>TO:</span> <span>SINGAPORE</span></div>
-        <div class="row"><span>FLIGHT NO.:</span> <span>CX739</span></div>
-        <div class="row"><span>DATE:</span> <span>24 OCT 2025</span></div>
-        <div class="row"><span>SEAT:</span> <span>16C</span></div>
-        <div class="row"><span>BN:</span> <span id="bnDisplay">ABC123</span></div>
-        <div class="row"><span>GATE:</span> <span>31</span></div>
-        <div class="row"><span>BOARD:</span> <span>18:10</span></div>
-        <div class="row"><span>CLOSE:</span> <span>18:40</span></div>
+    <!-- Boarding pass -->
+    <div id="boarding-pass" class="boarding-pass">
+        <b>Boarding Pass</b><br><br>
+        NAME: LEE / AMY<br>
+        FROM: HONG KONG<br>
+        TO: SINGAPORE<br>
+        FLIGHT NO.: CX739<br>
+        DATE: 24 OCT 2025<br>
+        SEAT: 16C<br>
+        BN: <span id="bp-bn"></span><br>
+        GATE: 31<br>
+        BOARD: 18:10<br>
+        CLOSE: 18:40<br>
     </div>
 
-    <div class="backend">
-        <button onclick="fakePush('Baggage MQ Push')">Push to MQ</button>
-        <button onclick="fakePush('Airport AFTN Push')">Push to AFTN</button>
+    <!-- Step 2: Baggage section -->
+    <div id="bagArea" style="display:none; margin-top:20px;">
+        <label for="bag">Baggage Tag Number</label>
+        <input id="bag" type="text" placeholder="Enter baggage tag" />
+
+        <label for="tagColor">Tag Color</label>
+        <select id="tagColor">
+            <option value="">Select Tag Color</option>
+            <option value="RED" class="red-tag">Red Tag (Singapore)</option>
+            <option value="BLUE" class="blue-tag">Blue Tag (Hong Kong)</option>
+        </select>
+        <small class="tag-note">
+            *Red Tag = Final Destination Singapore | Blue Tag = Through to Hong Kong hub
+        </small>
+
+        <label for="bagweight">Baggage Weight (kg)</label>
+        <input id="bagweight" type="number" placeholder="e.g. 22.5" />
+
+        <button onclick="handleBaggage()">Assign Baggage</button>
     </div>
+
+    <!-- Step 3: Push + next area -->
+    <div id="buttonsArea">
+        <button onclick="pushMQ()">Push to MQ</button>
+        <button onclick="pushAFTN()">Push to AFTN</button>
+        <button id="nextBtn" onclick="resetAll()">Next Customer</button>
+    </div>
+
+    <!-- Status -->
+    <h3 style="margin-top:20px; letter-spacing:0.6px;">Status</h3>
+    <div id="statusBox"></div>
 </div>
 
-<div class="footer">Cathay Hackathon — Check-In UI Demo</div>
+<p style="text-align:center; font-size:12px; color:#888; margin-top:15px; letter-spacing:0.5px;">
+    Cathay Hackathon — Check‑In UI Demo
+</p>
 
+<script>
+  const logBox = document.getElementById('statusBox');
+
+  function log(msg) {
+    const time = new Date().toLocaleString('en-US', {
+      hour12: true,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    logBox.textContent += `[${time}] ${msg}\n`;
+    logBox.scrollTop = logBox.scrollHeight;
+  }
+
+  // Step 1 — Validate booking number
+  function handleCheckIn() {
+    const input = document.getElementById('bn').value.trim().toUpperCase();
+    const pattern = /^[A-Z0-9]{6}$/;
+    if (!pattern.test(input)) {
+      alert('Please enter a valid 6‑character alphanumeric booking number.');
+      log('Invalid booking number entry.');
+      return;
+    }
+
+    document.getElementById('boarding-pass').style.display = 'block';
+    document.getElementById('bp-bn').textContent = input;
+    document.getElementById('bagArea').style.display = 'block';
+    log(`Passenger ${input} checked‑in.`);
+    log(`Boarding pass issued for flight CX739.`);
+  }
+
+  // Step 2 — Handle baggage info
+  function handleBaggage() {
+    const bag = document.getElementById('bag').value.trim() || 'BG001257';
+    const w = document.getElementById('bagweight').value || '22.5';
+    const color = document.getElementById('tagColor').value || 'DEFAULT';
+    log(`Baggage ${bag} assigned (${color} Tag,${w}kg).`);
+    document.getElementById('buttonsArea').style.display = 'block';
+  }
+
+  function pushMQ() {
+    log(`Message Queue update sent.`);
+  }
+
+  function pushAFTN() {
+    log(`AFTN message prepared and queued.`);
+  }
+
+  function resetAll() {
+    document.getElementById('bn').value = '';
+    document.getElementById('bag').value = '';
+    document.getElementById('bagweight').value = '';
+    document.getElementById('tagColor').selectedIndex = 0;
+    logBox.textContent = '';
+    document.getElementById('boarding-pass').style.display = 'none';
+    document.getElementById('bagArea').style.display = 'none';
+    document.getElementById('buttonsArea').style.display = 'none';
+    log(`Ready for next customer.`);
+  }
+</script>
 </body>
 </html>
