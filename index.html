@@ -163,17 +163,12 @@
     <!-- Step 2: Baggage section -->
     <div id="bagArea" style="display:none; margin-top:20px;">
         <label for="bag">Baggage Tag Number</label>
-        <input id="bag" type="text" placeholder="Enter baggage tag" />
+        <input id="bag" type="text" placeholder="Waiting baggage to be scanned..." />
 
         <label for="tagColor">Tag Color</label>
-        <select id="tagColor">
-            <option value="">Select Tag Color</option>
+        <select id="tagColor" disabled>
             <option value="RED" class="red-tag">Red Tag (Singapore)</option>
-            <option value="BLUE" class="blue-tag">Blue Tag (Hong Kong)</option>
         </select>
-        <small class="tag-note">
-            *Red Tag = Final Destination Singapore | Blue Tag = Through to Hong Kong hub
-        </small>
 
         <label for="bagweight">Baggage Weight (kg)</label>
         <input id="bagweight" type="number" placeholder="e.g. 22.5" />
@@ -226,12 +221,42 @@
     log(`Boarding pass issued for flight CX739.`);
   }
 
+  function generateBagId() {
+    const randomPart = () => Math.floor(1000 + Math.random() * 9000).toString();
+    return `BG-${randomPart()}-${randomPart()}`;
+  }
+
+  const bagInput = document.getElementById("bag");
+  const checkInBtn = document.getElementById("checkinBtn");
+
+  checkInBtn.addEventListener("click", () => {
+    // Clear input first
+    bagInput.value = "";
+
+    // Wait 2 seconds to simulate scanning delay
+    setTimeout(() => {
+      const fullValue = generateBagId();
+      const totalTime = 500; // 0.5s typing animation
+      const length = fullValue.length;
+      const interval = totalTime / length;
+      let i = 0;
+
+      const typing = setInterval(() => {
+        bagInput.value += fullValue[i];
+        i++;
+        if (i === length) {
+          clearInterval(typing);
+          log(`Baggage ${fullValue} scanned`);
+        }
+      }, interval);
+    }, 2000);
+  });
+
   // Step 2 — Handle baggage info
   function handleBaggage() {
     const bag = document.getElementById('bag').value.trim() || 'BG001257';
     const w = document.getElementById('bagweight').value || '22.5';
     const color = document.getElementById('tagColor').value || 'DEFAULT';
-    log(`Baggage ${bag} assigned (${color} Tag,${w}kg).`);
     log(`The check‑in status for PNR: ${document.getElementById('bn').value} pushed successfully.`)
     document.getElementById('buttonsArea').style.display = 'block';
   }
