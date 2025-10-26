@@ -141,8 +141,8 @@
 
 <div class="panel">
     <!-- Step 1: Booking number -->
-    <label for="bn">Booking Number</label>
-    <input id="bn" type="text" placeholder="Enter Booking Number (6 digits)" maxlength="6" />
+    <label for="bn">Passenger Name Record</label>
+    <input id="bn" type="text" placeholder="Enter Passenger Name Record (6 digits)" maxlength="6" />
     <button id="checkinBtn" onclick="handleCheckIn()">Check In</button>
 
     <!-- Boarding pass -->
@@ -154,7 +154,7 @@
         FLIGHT NO.: CX739<br>
         DATE: 24 OCT 2025<br>
         SEAT: 16C<br>
-        BN: <span id="bp-bn"></span><br>
+        PNR: <span id="bp-bn"></span><br>
         GATE: 31<br>
         BOARD: 18:10<br>
         CLOSE: 18:40<br>
@@ -183,8 +183,6 @@
 
     <!-- Step 3: Push + next area -->
     <div id="buttonsArea">
-        <button onclick="pushMQ()">Push to MQ</button>
-        <button onclick="pushAFTN()">Push to AFTN</button>
         <button id="nextBtn" onclick="resetAll()">Next Customer</button>
     </div>
 
@@ -234,15 +232,8 @@
     const w = document.getElementById('bagweight').value || '22.5';
     const color = document.getElementById('tagColor').value || 'DEFAULT';
     log(`Baggage ${bag} assigned (${color} Tag,${w}kg).`);
+    log(`The check‑in status for PNR: ${document.getElementById('bn').value} pushed successfully.`)
     document.getElementById('buttonsArea').style.display = 'block';
-  }
-
-  function pushMQ() {
-    log(`Message Queue update sent.`);
-  }
-
-  function pushAFTN() {
-    log(`AFTN message prepared and queued.`);
   }
 
   function resetAll() {
